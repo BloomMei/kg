@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мой Taplink</title>
-  <!-- Подключаем иконки -->
+  <!-- Иконки -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
-      padding: 40px;
+      padding: 20px;
       background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
       color: #333;
     }
@@ -21,6 +21,7 @@
       border-radius: 50%;
       margin-bottom: 20px;
       border: 3px solid white;
+      box-shadow: 0 0 15px rgba(255,255,255,0.6);
     }
     h1 {
       margin: 10px 0;
@@ -30,6 +31,8 @@
       color: white;
       font-size: 16px;
     }
+
+    /* Ссылки */
     .link {
       display: flex;
       align-items: center;
@@ -38,14 +41,13 @@
       padding: 15px;
       width: 100%;
       max-width: 280px;
-      background: white;
-      color: #333;
+      color: white;
       text-decoration: none;
       border-radius: 10px;
       font-weight: bold;
       font-size: 16px;
       transition: all 0.3s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
     }
     .link i {
       margin-right: 10px;
@@ -53,12 +55,13 @@
     }
     .link:hover {
       transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
     }
-    .telegram { color: #0088cc; }
-    .instagram { color: #e4405f; }
-    .youtube { color: #ff0000; }
-    .email { color: #444; }
-    .whatsapp { color: #25D366; }
+    .telegram { background: #0088cc; }
+    .instagram { background: #e4405f; }
+    .youtube { background: #ff0000; }
+    .email { background: #444; }
+    .whatsapp { background: #25D366; }
 
     /* Каталог */
     .catalog {
@@ -68,14 +71,22 @@
       color: white;
       margin-bottom: 20px;
     }
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
     .product {
       background: white;
       border-radius: 12px;
       padding: 15px;
-      margin: 15px auto;
-      max-width: 280px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       text-align: left;
+      transition: 0.3s;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 14px rgba(0,0,0,0.2);
     }
     .product img {
       width: 100%;
@@ -100,52 +111,63 @@
     }
     .buy-btn:hover {
       background: #1ebd5a;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <img src="https://via.placeholder.com/120" alt="Аватар" class="avatar">
-  <h1>Китайская косметика </h1>
+  <h1>Китайская косметика</h1>
   <p>Добро пожаловать в мои ссылки</p>
 
   <!-- Ссылки -->
-  <a class="link" href="https://t.me/username" target="_blank">
-    <i class="fab fa-telegram telegram"></i> Telegram
+  <a class="link telegram" href="https://t.me/username" target="_blank">
+    <i class="fab fa-telegram"></i> Telegram
   </a>
-  <a class="link" href="https://instagram.com/username" target="_blank">
-    <i class="fab fa-instagram instagram"></i> Instagram
+  <a class="link instagram" href="https://instagram.com/username" target="_blank">
+    <i class="fab fa-instagram"></i> Instagram
   </a>
-  <a class="link" href="https://youtube.com/" target="_blank">
-    <i class="fab fa-youtube youtube"></i> YouTube
+  <a class="link youtube" href="https://youtube.com/" target="_blank">
+    <i class="fab fa-youtube"></i> YouTube
   </a>
-  <a class="link" href="mailto:example@mail.com">
-    <i class="fas fa-envelope email"></i> Email
+  <a class="link email" href="mailto:example@mail.com">
+    <i class="fas fa-envelope"></i> Email
   </a>
-  <a class="link" href="https://wa.me/+996501168726" target="_blank">
-    <i class="fab fa-whatsapp whatsapp"></i> WhatsApp
+  <a class="link whatsapp" href="https://wa.me/996501168726" target="_blank">
+    <i class="fab fa-whatsapp"></i> WhatsApp
   </a>
 
   <!-- Каталог -->
   <div class="catalog">
     <h2>Каталог продукции</h2>
+    <div class="catalog-grid">
 
-    <div class="product">
-      <img src="cream.jpg" alt="Крем для лица">
-      <h3>Крем для лица</h3>
-      <p>Увлажняющий, 50 мл</p>
-      <span class="price">890 ₽</span>
-      <a href="https://wa.me/79990000000?text=Хочу%20заказать%20Крем%20для%20лица" 
-         class="buy-btn" target="_blank">Заказать в WhatsApp</a>
-    </div>
+      <div class="product">
+        <img src="cream.jpg" alt="Крем для лица">
+        <h3>Крем для лица</h3>
+        <p>Увлажняющий, 50 мл</p>
+        <span class="price">890 ₽</span>
+        <a href="https://wa.me/996501168726?text=Хочу%20заказать%20Крем%20для%20лица" 
+           class="buy-btn" target="_blank">Заказать в WhatsApp</a>
+      </div>
 
-    <div class="product">
-      <img src="mask.jpg" alt="Тканевая маска">
-      <h3>Тканевая маска</h3>
-      <p>С экстрактом зелёного чая</p>
-      <span class="price">120 ₽</span>
-      <a href="https://wa.me/79990000000?text=Хочу%20заказать%20Тканевую%20маску" 
-         class="buy-btn" target="_blank">Заказать в WhatsApp</a>
+      <div class="product">
+        <img src="mask.jpg" alt="Тканевая маска">
+        <h3>Тканевая маска</h3>
+        <p>С экстрактом зелёного чая</p>
+        <span class="price">120 ₽</span>
+        <a href="https://wa.me/996501168726?text=Хочу%20заказать%20Тканевую%20маску" 
+           class="buy-btn" target="_blank">Заказать в WhatsApp</a>
+      </div>
+
     </div>
   </div>
 </body>
 </html>
+
