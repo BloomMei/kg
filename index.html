@@ -32,6 +32,19 @@
       font-size: 16px;
     }
 
+    /* Анимация появления */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hidden {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .show {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
     /* Ссылки */
     .link {
       display: flex;
@@ -122,52 +135,72 @@
   </style>
 </head>
 <body>
-  <img src="https://via.placeholder.com/120" alt="Аватар" class="avatar">
-  <h1>Китайская косметика</h1>
-  <p>Добро пожаловать в мои ссылки</p>
+  <img src="https://via.placeholder.com/120" alt="Аватар" class="avatar hidden">
+  <h1 class="hidden">Китайская косметика</h1>
+  <p class="hidden">Добро пожаловать в мои ссылки</p>
 
   <!-- Ссылки -->
-  <a class="link telegram" href="https://t.me/username" target="_blank">
+  <a class="link telegram hidden" href="https://t.me/username" target="_blank">
     <i class="fab fa-telegram"></i> Telegram
   </a>
-  <a class="link instagram" href="https://instagram.com/username" target="_blank">
+  <a class="link instagram hidden" href="https://instagram.com/username" target="_blank">
     <i class="fab fa-instagram"></i> Instagram
   </a>
-  <a class="link youtube" href="https://youtube.com/" target="_blank">
+  <a class="link youtube hidden" href="https://youtube.com/" target="_blank">
     <i class="fab fa-youtube"></i> YouTube
   </a>
-  <a class="link email" href="mailto:example@mail.com">
+  <a class="link email hidden" href="mailto:example@mail.com">
     <i class="fas fa-envelope"></i> Email
   </a>
-  <a class="link whatsapp" href="https://wa.me/996501168726" target="_blank">
+  <a class="link whatsapp hidden" href="https://wa.me/+996501168726" target="_blank">
     <i class="fab fa-whatsapp"></i> WhatsApp
   </a>
 
   <!-- Каталог -->
   <div class="catalog">
-    <h2>Каталог продукции</h2>
+    <h2 class="hidden">Каталог продукции</h2>
     <div class="catalog-grid">
 
-      <div class="product">
+      <div class="product hidden">
         <img src="cream.jpg" alt="Крем для лица">
         <h3>Крем для лица</h3>
         <p>Увлажняющий, 50 мл</p>
         <span class="price">890 ₽</span>
-        <a href="https://wa.me/996501168726?text=Хочу%20заказать%20Крем%20для%20лица" 
+        <a href="https://wa.me/79990000000?text=Хочу%20заказать%20Крем%20для%20лица" 
            class="buy-btn" target="_blank">Заказать в WhatsApp</a>
       </div>
 
-      <div class="product">
+      <div class="product hidden">
         <img src="mask.jpg" alt="Тканевая маска">
         <h3>Тканевая маска</h3>
         <p>С экстрактом зелёного чая</p>
         <span class="price">120 ₽</span>
-        <a href="https://wa.me/996501168726?text=Хочу%20заказать%20Тканевую%20маску" 
+        <a href="https://wa.me/79990000000?text=Хочу%20заказать%20Тканевую%20маску" 
            class="buy-btn" target="_blank">Заказать в WhatsApp</a>
       </div>
 
     </div>
   </div>
+
+  <!-- JS для анимации при скролле -->
+  <script>
+    const elements = document.querySelectorAll('.hidden');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target); // убрать, если анимация только один раз
+        }
+      });
+    }, { threshold: 0.2 });
+
+    elements.forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
+
+  </div>
+</body>
+</html>
+
 
