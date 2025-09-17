@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мой Taplink</title>
-  <!-- Иконки -->
+  <title>Магазин косметики</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
@@ -12,192 +11,52 @@
       text-align: center;
       margin: 0;
       padding: 20px;
-      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
-      color: #333;
+      background: linear-gradient(135deg, #f9ecec 0%, #f6e1f9 100%);
+      color: #444;
     }
     .avatar {
       width: 120px;
       height: 120px;
       border-radius: 50%;
       margin-bottom: 20px;
-      border: 3px solid white;
-      box-shadow: 0 0 15px rgba(255,255,255,0.6);
+      border: 3px solid #fff;
+      box-shadow: 0 0 15px rgba(214,51,108,0.4);
     }
-    h1 {
-      margin: 10px 0;
-      color: white;
-    }
-    p {
-      color: white;
-      font-size: 16px;
-    }
-
-    /* Анимация появления */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hidden {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    .show {
-      animation: fadeInUp 0.8s ease forwards;
-    }
-
-    /* Ссылки */
+    h1 { color: #d6336c; }
     .link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 12px auto;
-      padding: 15px;
-      width: 100%;
-      max-width: 280px;
+      display: inline-block;
+      margin: 10px auto;
+      padding: 12px 20px;
+      border-radius: 30px;
+      background: #d6336c;
       color: white;
       text-decoration: none;
-      border-radius: 10px;
       font-weight: bold;
       font-size: 16px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-    }
-    .link i {
-      margin-right: 10px;
-      font-size: 18px;
-    }
-    .link:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-    }
-    .telegram { background: #0088cc; }
-    .instagram { background: #e4405f; }
-    .youtube { background: #ff0000; }
-    .email { background: #444; }
-    .whatsapp { background: #25D366; }
-
-    /* Каталог */
-    .catalog {
-      margin-top: 40px;
-    }
-    .catalog h2 {
-      color: white;
-      margin-bottom: 20px;
-    }
-    .catalog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .product {
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-align: left;
       transition: 0.3s;
     }
-    .product:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 14px rgba(0,0,0,0.2);
-    }
-    .product img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .product h3 {
-      margin: 10px 0 5px;
-    }
-    .price {
-      display: block;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-    .buy-btn {
-      display: inline-block;
-      background: #25D366;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .buy-btn:hover {
-      background: #1ebd5a;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 15px;
-      }
-    }
+    .link:hover { background: #a61e4d; }
   </style>
 </head>
 <body>
-  <img src="https://via.placeholder.com/120" alt="Аватар" class="avatar hidden">
-  <h1 class="hidden">Китайская косметика</h1>
-  <p class="hidden">Добро пожаловать в мои ссылки</p>
+  <img src="https://via.placeholder.com/120" alt="Аватар" class="avatar">
+  <h1>Магазин косметики</h1>
+  <p>Лучшие средства для ухода за кожей и волосами ✨</p>
 
-  <!-- Ссылки -->
-  <a class="link telegram hidden" href="https://t.me/username" target="_blank">
-    <i class="fab fa-telegram"></i> Telegram
-  </a>
-  <a class="link instagram hidden" href="https://instagram.com/username" target="_blank">
+  <a href="catalog.html" class="link">Перейти в каталог</a>
+  <br>
+  <a href="https://instagram.com/username" class="link" target="_blank">
     <i class="fab fa-instagram"></i> Instagram
   </a>
-  <a class="link youtube hidden" href="https://youtube.com/" target="_blank">
-    <i class="fab fa-youtube"></i> YouTube
-  </a>
-  <a class="link email hidden" href="mailto:example@mail.com">
-    <i class="fas fa-envelope"></i> Email
-  </a>
-  <a class="link whatsapp hidden" href="https://wa.me/+996501168726" target="_blank">
+  <a href="https://wa.me/79990000000" class="link" target="_blank">
     <i class="fab fa-whatsapp"></i> WhatsApp
   </a>
-
-  <!-- Каталог -->
-  <div class="catalog">
-    <h2 class="hidden">Каталог продукции</h2>
-    <div class="catalog-grid">
-
-      <div class="product hidden">
-        <img src="cream.jpg" alt="Крем для лица">
-        <h3>Крем для лица</h3>
-        <p>Увлажняющий, 50 мл</p>
-        <span class="price">890 ₽</span>
-        <a href="https://wa.me/79990000000?text=Хочу%20заказать%20Крем%20для%20лица" 
-           class="buy-btn" target="_blank">Заказать в WhatsApp</a>
-      </div>
-
-      <div class="product hidden">
-        <img src="mask1.jpg" alt="Тканевая маска">
-        <h3>Тканевая маска</h3>
-        <p>С экстрактом зелёного чая</p>
-        <span class="price">120 ₽</span>
-        <a href="https://wa.me/79990000000?text=Хочу%20заказать%20Тканевую%20маску" 
-           class="buy-btn" target="_blank">Заказать в WhatsApp</a>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- JS для анимации при скролле -->
-  <script>
-    const elements = document.querySelectorAll('.hidden');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-          observer.unobserve(entry.target); // убрать, если анимация только один раз
-        }
-      });
-    }, { threshold: 0.2 });
-
-    elements.forEach(el => observer.observe(el));
-  </script>
+  <a href="https://t.me/username" class="link" target="_blank">
+    <i class="fab fa-telegram"></i> Telegram
+  </a>
 </body>
 </html>
+
 
 
 
