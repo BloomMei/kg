@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      background: #fefefe;
+      color: #444;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #d6336c;
+      padding: 15px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    header h1 { margin: 0; font-size: 20px; }
+    .menu-left a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      margin-right: 15px;
+    }
+    .cart-icon {
+      position: relative;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: yellow;
+      color: #000;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 50%;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 22px;
+      cursor: pointer;
+      margin-right: 15px;
+    }
+
+    /* Левое меню */
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 220px;
+      height: calc(100% - 60px);
+      background: #fff;
+      border-right: 1px solid #ddd;
+      padding: 10px;
+      overflow-y: auto;
+      transition: 0.3s;
+      z-index: 1500;
+    }
+    .sidebar h3 {
+      margin: 10px 0;
+      font-size: 16px;
+      color: #d6336c;
+    }
+    .sidebar a {
+      display: block;
+      padding: 8px 10px;
+      margin-bottom: 5px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #444;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: #d6336c;
+      color: white;
+    }
+
+    /* Контент */
+    .content {
+      margin-left: 230px;
+      padding: 80px 20px 20px;
+      flex: 1;
+    }
+
+    /* 🔍 Поиск + сортировка */
+    .tools {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 8px;
+      padding: 8px 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      flex: 1;
+      min-width: 220px;
+      max-width: 400px;
+    }
+    .search-box i { color: #888; margin-right: 10px; }
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+    .sort-box select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    section { margin-bottom: 40px; }
+    section h2 { margin-bottom: 15px; color: #d6336c; }
+
+    /* Товары */
+    .product {
+      display: flex;
+      align-items: flex-start;
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .product img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
+    .product-info { flex: 1; }
+    .product-info h3 { margin: 0 0 5px; font-size: 18px; }
+    .product-info p { margin: 0 0 8px; font-size: 14px; color: #666; }
+    .price {
+      font-weight: bold;
+      color: #d6336c;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .add-btn {
+      padding: 6px 12px;
+      border: none;
+      background: #d6336c;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .add-btn:hover { background: #a61e4d; }
+
+    /* Корзина */
+    .cart-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 300px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      transition: 0.3s;
+      overflow-y: auto;
+      z-index: 2000;
+    }
+    .cart-panel.active { right: 0; }
+    .cart-item {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+    .cart-item span { display: block; }
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background: #25D366;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+    .checkout-btn:hover { background: #1ebd5a; }
+
+    /* Мобилка */
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .sidebar {
+        position: fixed;
+        width: 200px;
+        transform: translateX(-100%);
+      }
+      .sidebar.active { transform: translateX(0); }
+      .content { margin-left: 0; padding: 80px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="menu-left">
+      <span class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
+      <a href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+    </div>
+    <h1>Каталог</h1>
+    <div class="cart-icon" onclick="toggleCart()">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count" id="cart-count">0</span>
+    </div>
+  </header>
+
+  <!-- Левое меню -->
+  <nav class="sidebar" id="sidebar">
+    <h3>Категории</h3>
+    <a href="#gel" class="active">Гель для лица</a>
+    <a href="#face-cream">Крем для лица</a>
+    <a href="#body-cream">Крем для тела</a>
+    <a href="#eye-mask">Маска для кожи вокруг глаз</a>
+    <a href="#face-mask">Маска для лица</a>
+    <a href="#foot-mask">Маска для ног</a>
+    <a href="#hand-mask">Маска для рук</a>
+    <a href="#body-mask">Маска для тела</a>
+    <a href="#neck-mask">Маска для шеи и декольте</a>
+  </nav>
+
+  <!-- Контент -->
+  <div class="content">
+    <!-- 🔍 Поиск + сортировка -->
+    <div class="tools">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search" placeholder="Поиск по товарам...">
+      </div>
+      <div class="sort-box">
+        <select id="sort">
+          <option value="">Сортировка</option>
+          <option value="asc">Цена: по возрастанию</option>
+          <option value="desc">Цена: по убыванию</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Категории -->
+    <section id="gel">
+      <h2>Гель для лица</h2>
+      <div class="product">
+        <img src="gel.jpg" alt="Гель">
+        <div class="product-info">
+          <h3>Гель для умывания</h3>
+          <p>С алоэ вера</p>
+          <span class="price" data-price="300">300 ₽</span>
+          <button class="add-btn" onclick="addToCart('Гель для умывания', 300)">+ В корзину</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="face-cream">
+      <h2>Крем для лица</h2>
+      <section id="face-cream">
+  <h2>Крем для лица</h2>
+
+  <div class="product">
+    <img src="acen-cream.jpg" alt="Органический крем с Алоэ Вера – Acen Cream">
+    <div class="product-info">
+      <h3>Органический крем с Алоэ Вера – Acen Cream</h3>
+      <p>
+        100% органический крем с Алоэ Вера 🌿  
+        Эффективно борется с угрями, прыщами и воспалениями.  
+        Подходит для всех типов кожи.  
+      </p>
+      <span class="price" data-price="1200">1200 ₽</span>
+      <button class="add-btn" onclick="addToCart('Органический крем с Алоэ Вера – Acen Cream', 1200)">+ В корзину</button>
+    </div>
+  </div>
+</section>
+
+      <div class="product">
+        <img src="cream.jpg" alt="Крем">
+        <div class="product-info">
+          <h3>Крем увлажняющий</h3>
+          <p>50 мл</p>
+          <span class="price" data-price="890">890 ₽</span>
+          <button class="add-btn" onclick="addToCart('Крем увлажняющий', 890)">+ В корзину</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="face-mask">
+      <h2>Маска для лица</h2>
+      <div class="product">
+        <img src="mask1.jpg" alt="Маска">
+        <div class="product-info">
+          <h3>Тканевая маска</h3>
+          <p>Зелёный чай</p>
+          <span class="price" data-price="120">120 ₽</span>
+          <button class="add-btn" onclick="addToCart('Тканевая маска', 120)">+ В корзину</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Корзина -->
+  <div class="cart-panel" id="cart-panel">
+    <h2>Моя корзина</h2>
+    <div id="cart-items"></div>
+    <a href="#" id="checkout" class="checkout-btn">Оформить заказ</a>
+  </div>
+
+  <script>
+    let cart = [];
+    const cartCount = document.getElementById("cart-count");
+    const cartPanel = document.getElementById("cart-panel");
+    const cartItems = document.getElementById("cart-items");
+    const checkoutBtn = document.getElementById("checkout");
+    const sidebar = document.getElementById("sidebar");
+
+    function addToCart(name, price) {
+      cart.push({name, price});
+      updateCart();
+    }
+
+    function updateCart() {
+      cartCount.textContent = cart.length;
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price;
+        let div = document.createElement("div");
+        div.classList.add("cart-item");
+        div.innerHTML = `<span><b>${item.name}</b></span><span>${item.price} ₽</span>`;
+        cartItems.appendChild(div);
+      });
+      checkoutBtn.href = `https://wa.me/996501168726?text=Хочу%20заказать:%20${cart.map(i => i.name).join(", ")}.%20Сумма:%20${total}₽`;
+    }
+
+    function toggleCart() { cartPanel.classList.toggle("active"); }
+    function toggleSidebar() { sidebar.classList.toggle("active"); }
+
+    // 🔍 Поиск по товарам
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("input", () => {
+      const value = searchInput.value.toLowerCase();
+      document.querySelectorAll(".product").forEach(product => {
+        const text = product.innerText.toLowerCase();
+        product.style.display = text.includes(value) ? "flex" : "none";
+      });
+    });
+
+    // ⬆⬇ Сортировка по цене
+    const sortSelect = document.getElementById("sort");
+    sortSelect.addEventListener("change", () => {
+      const value = sortSelect.value;
+      document.querySelectorAll("section").forEach(section => {
+        const products = Array.from(section.querySelectorAll(".product"));
+        const container = section;
+        products.sort((a, b) => {
+          const priceA = parseInt(a.querySelector(".price").dataset.price);
+          const priceB = parseInt(b.querySelector(".price").dataset.price);
+          return value === "asc" ? priceA - priceB : value === "desc" ? priceB - priceA : 0;
+        });
+        products.forEach(p => container.appendChild(p));
+      });
+    });
+  </script>
+</body>
+</html>
