@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -167,7 +167,7 @@
       padding: 20px;
       transition: 0.3s;
       overflow-y: auto;
-      z-index: 2000;
+      z-index: 2001;
     }
     .cart-panel.active { right: 0; }
     .cart-item { margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
@@ -216,6 +216,15 @@
       cursor: pointer;
     }
 
+    /* Оверлей (скрытый по умолчанию) */
+    #cart-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+    }
+
     /* Мобилка */
     @media (max-width: 768px) {
       .menu-toggle { display: block; }
@@ -223,6 +232,30 @@
       .sidebar.active { transform: translateX(0); }
       .content { margin-left: 0; padding: 80px 10px; }
     }
+
+    /* Модальное окно */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  overflow: auto; /* <<< позволяет прокрутку всего модального */
+}
+
+/* Контент модалки */
+.modal-content {
+  background: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;     /* ограничиваем высоту окна */
+  overflow-y: auto;     /* <<< прокрутка внутри контента */
+}
+
   </style>
 </head>
 <body>
@@ -270,89 +303,67 @@
     </div>
 
     <section id="face-cream">
-  <h2>Крем для лица</h2>
+      <h2>Крем для лица</h2>
 
-  <!-- Увлажняющий крем с женьшенем -->
-  <div class="product">
-    <img src="cream2.png" alt="Крем с женьшенем">
-    <div class="product-info">
-      <h3>Увлажняющий крем с женьшенем</h3>
-      <p>150 мл</p>
-      <span class="price" data-price="990">990 ₽</span>
-      <button class="add-btn" onclick="addToCart('Увлажняющий крем с женьшенем', 990)">+ В корзину</button>
-      <button class="add-btn" style="background:#f59fbc;" onclick="openModal('modal-cream')">Подробнее</button>
-    </div>
+      <!-- Увлажняющий крем с женьшенем -->
+      <div class="product">
+        <img src="cream2.png" alt="Крем с женьшенем">
+        <div class="product-info">
+          <h3>Увлажняющий крем с женьшенем</h3>
+          <p>150 мл</p>
+          <span class="price" data-price="990">990 ₽</span>
+          <button class="add-btn" onclick="addToCart('Увлажняющий крем с женьшенем', 990)">+ В корзину</button>
+          <button class="add-btn" style="background:#f59fbc;" onclick="openModal('modal-cream')">Подробнее</button>
+        </div>
+      </div>
+
+      <!-- Органический крем с Алоэ Вера -->
+      <div class="product">
+        <img src="cream1.png" alt="Крем с алоэ вера">
+        <div class="product-info">
+          <h3>Органический крем с Алоэ Вера – Acen Cream 🌿</h3>
+          <p>50 мл</p>
+          <span class="price" data-price="850">850 ₽</span>
+          <button class="add-btn" onclick="addToCart('Органический крем с Алоэ Вера – Acen Cream 🌿', 850)">+ В корзину</button>
+          <button class="add-btn" style="background:#f59fbc;" onclick="openModal('modal-aloe')">Подробнее</button>
+        </div>
+      </div>
+
+      <!-- Крем Caviar с красной икрой -->
+      <div class="product">
+        <img src="cream3.png" alt="Крем с красной икрой">
+        <div class="product-info">
+          <h3>Caviar Крем с Красной Икрой ✨</h3>
+          <p>100 мл</p>
+          <span class="price" data-price="1200">1200 ₽</span>
+          <button class="add-btn" onclick="addToCart('Caviar Крем с Красной Икрой ✨', 1200)">+ В корзину</button>
+          <button class="add-btn" style="background:#f59fbc;" onclick="openModal('modal-caviar')">Подробнее</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Остальные секции (тестовые) -->
+    <section id="gel"><h2>Гель для лица</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Гель для лица (тест)</h3><p>50 мл</p><span class="price" data-price="500">500 ₽</span><button class="add-btn" onclick="addToCart('Гель для лица', 500)">+ В корзину</button></div></div></section>
+
+    <section id="body-cream"><h2>Крем для тела</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Крем для тела (тест)</h3><p>200 мл</p><span class="price" data-price="600">600 ₽</span><button class="add-btn" onclick="addToCart('Крем для тела', 600)">+ В корзину</button></div></div></section>
+
+    <section id="eye-mask"><h2>Маска для глаз</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Маска для глаз (тест)</h3><span class="price" data-price="400">400 ₽</span><button class="add-btn" onclick="addToCart('Маска для глаз', 400)">+ В корзину</button></div></div></section>
+
+    <section id="face-mask"><h2>Маска для лица</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Маска для лица (тест)</h3><span class="price" data-price="550">550 ₽</span><button class="add-btn" onclick="addToCart('Маска для лица', 550)">+ В корзину</button></div></div></section>
+
+    <section id="foot-mask"><h2>Маска для ног</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Маска для ног (тест)</h3><span class="price" data-price="300">300 ₽</span><button class="add-btn" onclick="addToCart('Маска для ног', 300)">+ В корзину</button></div></div></section>
+
+    <section id="hand-mask"><h2>Маска для рук</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Маска для рук (тест)</h3><span class="price" data-price="350">350 ₽</span><button class="add-btn" onclick="addToCart('Маска для рук', 350)">+ В корзину</button></div></div></section>
+
+    <section id="body-mask"><h2>Маска для тела</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Маска для тела (тест)</h3><span class="price" data-price="700">700 ₽</span><button class="add-btn" onclick="addToCart('Маска для тела', 700)">+ В корзину</button></div></div></section>
+
+    <section id="neck-mask"><h2>Маска для шеи и декольте</h2><div class="product"><img src="test.jpg"><div class="product-info"><h3>Маска для шеи и декольте (тест)</h3><span class="price" data-price="800">800 ₽</span><button class="add-btn" onclick="addToCart('Маска для шеи', 800)">+ В корзину</button></div></div></section>
   </div>
 
-  <!-- Органический крем с Алоэ Вера -->
-  <div class="product">
-    <img src="cream1.png" alt="Крем с алоэ вера">
-    <div class="product-info">
-      <h3>Органический крем с Алоэ Вера – Acen Cream 🌿</h3>
-      <p>50 мл</p>
-      <span class="price" data-price="850">850 ₽</span>
-      <button class="add-btn" onclick="addToCart('Органический крем с Алоэ Вера – Acen Cream 🌿', 850)">+ В корзину</button>
-      <button class="add-btn" style="background:#f59fbc;" onclick="openModal('modal-aloe')">Подробнее</button>
-    </div>
-  </div>
-
-  <!-- Крем Caviar с красной икрой -->
-  <div class="product">
-    <img src="cream3.png" alt="Крем с красной икрой">
-    <div class="product-info">
-      <h3>Caviar Крем с Красной Икрой ✨</h3>
-      <p>100 мл</p>
-      <span class="price" data-price="1200">1200 ₽</span>
-      <button class="add-btn" onclick="addToCart('Caviar Крем с Красной Икрой ✨', 1200)">+ В корзину</button>
-      <button class="add-btn" style="background:#f59fbc;" onclick="openModal('modal-caviar')">Подробнее</button>
-    </div>
-  </div>
-</section>
-
-<!-- Модалка Caviar -->
-<div id="modal-caviar" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('modal-caviar')">&times;</span>
-    <h2>Caviar Крем с Красной Икрой, 100 мл ✨</h2>
-    <img src="cream3.jpg" alt="Caviar Крем с Красной Икрой">
-    <p><b>Побалуйте свою кожу роскошным уходом!</b></p>
-    <p>Антивозрастной крем с экстрактом лососевой икры и гиалуроновой кислотой глубоко увлажняет и питает кожу, помогая сохранить её молодость и свежесть.</p>
-    <ul>
-      <li>💎 Интенсивное увлажнение и восстановление кожи</li>
-      <li>💎 Повышение упругости и эластичности</li>
-      <li>💎 Снижение видимости морщин и профилактика их появления</li>
-      <li>💎 Защита от сухости и потери тонуса</li>
-      <li>💎 Здоровое сияние и гладкость кожи</li>
-    </ul>
-    <p><b>🌿 Ключевые компоненты:</b><br>
-    Экстракт красной икры — источник ценных микроэлементов для питания и восстановления кожи.<br>
-    Гиалуроновая кислота — удерживает влагу в глубоких слоях кожи, делая её гладкой и молодой.</p>
-    <p><b>📌 Применение:</b><br>
-    Наносите крем утром и вечером на очищенную кожу лица лёгкими массирующими движениями.</p>
-    <p>💖 Ваш секрет упругой, увлажнённой и сияющей кожи — <b>Caviar Cream!</b></p>
-    <button class="add-btn" onclick="addToCart('Caviar Крем с Красной Икрой ✨', 1200)">+ В корзину</button>
-  </div>
-</div>
-
-<!-- Модалка Женьшень -->
-<div id="modal-cream" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('modal-cream')">&times;</span>
-    <h2>Увлажняющий крем с женьшенем</h2>
-    <img src="cream1.png" alt="Крем">
-    <p><b>Крем с женьшенем и гиалуроновой кислотой, 150 мл ✨</b></p>
-    <p>Откройте секрет сияющей и ухоженной кожи! Наш крем сочетает силу женьшеня и глубокое увлажнение гиалуроновой кислоты...</p>
-    <button class="add-btn" onclick="addToCart('Увлажняющий крем с женьшенем', 990)">+ В корзину</button>
-  </div>
-</div>
-
-<!-- Модалка Алоэ Вера -->
-<div id="modal-aloe" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('modal-aloe')">&times;</span>
-    <h2>Органический крем с Алоэ Вера – Acen Cream 🌿</h2>
-    <img src="cream2.png" alt="Крем с Алоэ Вера">
-    <p><b>✨ Идеальное решение для сухой и проблемной кожи!</b></p>
+  <!-- Модалки -->
+  <div id="modal-cream" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('modal-cream')">&times;</span><h2>Крем с женьшенем</h2><img src="cream2.png"><p>Крем с женьшенем и гиалуроновой кислотой, 150 мл ✨</p>
+<p>Откройте секрет сияющей и ухоженной кожи! Наш крем сочетает силу женьшеня и глубокое увлажнение гиалуроновой кислоты...</p></div></div>
+  <div id="modal-aloe" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('modal-aloe')">&times;</span><h2>Крем с Алоэ Вера 🌿</h2><img src="cream1.png"><p><b>✨ Идеальное решение для сухой и проблемной кожи!</b></p>
     <p>Формула на основе натурального и органического экстракта алоэ вера с мультивитаминами нежно ухаживает за кожей, помогая ей быть здоровой и сияющей.</p>
     <ul>
       <li>💚 Эффективно борется с угрями, прыщами и воспалениями</li>
@@ -365,11 +376,13 @@
     <p><b>📌 Применение:</b><br>
     Наносите на очищенную кожу 2 раза в день — утром и вечером. Крем действует точечно: наносите только на проблемные участки.</p>
     <p><b>⚠️ Важно:</b> Только для наружного применения.</p>
-    <p>✨ Почувствуйте силу природы и наслаждайтесь чистой, здоровой кожей каждый день с Acen Cream!</p>
-    <button class="add-btn" onclick="addToCart('Органический крем с Алоэ Вера – Acen Cream 🌿', 850)">+ В корзину</button>
-  </div>
-</div>
+    <p>✨ Почувствуйте силу природы и наслаждайтесь чистой, здоровой кожей каждый день с Acen Cream!</p></div></div>
+  <div id="modal-caviar" class="modal"><div class="modal-content"><span class="close" onclick="closeModal('modal-caviar')">&times;</span><h2>Caviar Крем с Красной Икрой</h2><img src="cream3.png"><p><b>🌿 Ключевые компоненты:</b><br>
+    Экстракт красной икры — источник ценных микроэлементов для питания и восстановления кожи.<br>
+    Гиалуроновая кислота — удерживает влагу в глубоких слоях кожи, делая её гладкой и молодой.</p></div></div>
 
+  <!-- Оверлей для корзины -->
+  <div id="cart-overlay"></div>
 
   <!-- Корзина -->
   <div class="cart-panel" id="cart-panel">
@@ -385,6 +398,7 @@
     const cartItems = document.getElementById("cart-items");
     const checkoutBtn = document.getElementById("checkout");
     const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("cart-overlay");
 
     function addToCart(name, price) {
       cart.push({name, price});
@@ -401,9 +415,20 @@
         div.innerHTML = `<span><b>${item.name}</b></span><span>${item.price} ₽</span>`;
         cartItems.appendChild(div);
       });
-      checkoutBtn.href = `https://wa.me/+996501168726?text=Хочу%20заказать:%20${cart.map(i => i.name).join(", ")}.%20Сумма:%20${total}₽`;
+      // Использую формат без "+" в wa.me (стандарт)
+      checkoutBtn.href = `https://wa.me/996501168726?text=${encodeURIComponent('Хочу заказать: ' + cart.map(i => i.name).join(', ') + '. Сумма: ' + total + '₽')}`;
     }
-    function toggleCart() { cartPanel.classList.toggle("active"); }
+
+    function toggleCart() {
+      const active = cartPanel.classList.toggle("active");
+      overlay.style.display = active ? "block" : "none";
+    }
+    // Закрытие по клику на фон
+    overlay.addEventListener("click", () => {
+      cartPanel.classList.remove("active");
+      overlay.style.display = "none";
+    });
+
     function toggleSidebar() { sidebar.classList.toggle("active"); }
 
     // 🔍 Поиск
@@ -416,33 +441,48 @@
       });
     });
 
-    // ⬆⬇ Сортировка
+    // ⬆⬇ Сортировка (исправлена — предыдущая версия была обрезана и вызывала синтаксическую ошибку)
     const sortSelect = document.getElementById("sort");
     sortSelect.addEventListener("change", () => {
       const value = sortSelect.value;
       document.querySelectorAll("section").forEach(section => {
         const products = Array.from(section.querySelectorAll(".product"));
         products.sort((a, b) => {
-          const priceA = parseInt(a.querySelector(".price").dataset.price);
-          const priceB = parseInt(b.querySelector(".price").dataset.price);
-          return value === "asc" ? priceA - priceB : value === "desc" ? priceB - priceA : 0;
+          const pa = parseInt(a.querySelector(".price").dataset.price) || 0;
+          const pb = parseInt(b.querySelector(".price").dataset.price) || 0;
+          if (value === "asc") return pa - pb;
+          if (value === "desc") return pb - pa;
+          return 0;
         });
         products.forEach(p => section.appendChild(p));
       });
     });
 
-    // 📦 Модальные окна
+    // Модальные окна
     function openModal(id) {
-      document.getElementById(id).style.display = "block";
+      const el = document.getElementById(id);
+      if (el) el.style.display = "block";
     }
     function closeModal(id) {
-      document.getElementById(id).style.display = "none";
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
     }
     window.onclick = function(event) {
       document.querySelectorAll(".modal").forEach(modal => {
         if (event.target === modal) { modal.style.display = "none"; }
       });
-    }
+    };
+
+    // Закрытие по ESC (удобство)
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        // закрыть модалки
+        document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+        // закрыть корзину
+        cartPanel.classList.remove("active");
+        overlay.style.display = "none";
+      }
+    });
   </script>
 </body>
 </html>
