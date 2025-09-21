@@ -158,34 +158,7 @@
     .add-btn:hover { background: #a61e4d; }
 
     /* Корзина */
-    .cart-panel {
-      position: fixed;
-      top: 0; right: -100%;
-      width: 300px; height: 100%;
-      background: #fff;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-      padding: 20px;
-      transition: 0.3s;
-      overflow-y: auto;
-      z-index: 2001;
-    }
-    .cart-panel.active { right: 0; }
-    .cart-item { margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-    .cart-item span { display: block; }
-    .checkout-btn {
-      display: block;
-      width: 100%;
-      margin-top: 20px;
-      padding: 12px;
-      background: #25D366;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-    }
+    
     .checkout-btn:hover { background: #1ebd5a; }
 
     /* Модальное окно */
@@ -216,16 +189,7 @@
       cursor: pointer;
     }
 
-    /* Оверлей (скрытый по умолчанию) */
-    #cart-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
-    }
-
-    /* Мобилка */
+  /* Мобилка */
     @media (max-width: 768px) {
       .menu-toggle { display: block; }
       .sidebar { position: fixed; width: 200px; transform: translateX(-100%); }
@@ -259,17 +223,18 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="menu-left">
-      <span class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
-      <a href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
-    </div>
-    <h1>Каталог</h1>
-    <div class="cart-icon" onclick="toggleCart()">
-      <i class="fas fa-shopping-cart"></i>
-      <span class="cart-count" id="cart-count">0</span>
-    </div>
-  </header>
+ <header>
+  <div class="menu-left">
+    <span class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
+    <a href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+  </div>
+  <h1>Каталог</h1>
+  <!-- Корзина -->
+  <div class="cart-icon" onclick="window.location.href='cart.html'">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cart-count" class="cart-count">0</span>
+  </div>
+</header>
 
   <!-- Левое меню -->
   <nav class="sidebar" id="sidebar">
@@ -381,55 +346,44 @@
     Экстракт красной икры — источник ценных микроэлементов для питания и восстановления кожи.<br>
     Гиалуроновая кислота — удерживает влагу в глубоких слоях кожи, делая её гладкой и молодой.</p></div></div>
 
-  <!-- Оверлей для корзины -->
-  <div id="cart-overlay"></div>
 
-  <!-- Корзина -->
-  <div class="cart-panel" id="cart-panel">
-    <h2>Моя корзина</h2>
-    <div id="cart-items"></div>
-    <a href="#" id="checkout" class="checkout-btn">Оформить заказ</a>
-  </div>
+ <!-- Кнопка корзины (внизу или в хедере) -->
+<div class="cart-icon" onclick="window.location.href='cart.html'">
+  <i class="fas fa-shopping-cart"></i>
+  <span id="cart-count" class="cart-count">0</span>
+</div>
+
 
   <script>
-    let cart = [];
-    const cartCount = document.getElementById("cart-count");
-    const cartPanel = document.getElementById("cart-panel");
-    const cartItems = document.getElementById("cart-items");
-    const checkoutBtn = document.getElementById("checkout");
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("cart-overlay");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    function addToCart(name, price) {
-      cart.push({name, price});
-      updateCart();
-    }
-    function updateCart() {
-      cartCount.textContent = cart.length;
-      cartItems.innerHTML = "";
-      let total = 0;
-      cart.forEach(item => {
-        total += item.price;
-        let div = document.createElement("div");
-        div.classList.add("cart-item");
-        div.innerHTML = `<span><b>${item.name}</b></span><span>${item.price} ₽</span>`;
-        cartItems.appendChild(div);
-      });
-      // Использую формат без "+" в wa.me (стандарт)
-      checkoutBtn.href = `https://wa.me/996501168726?text=${encodeURIComponent('Хочу заказать: ' + cart.map(i => i.name).join(', ') + '. Сумма: ' + total + '₽')}`;
-    }
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
 
-    function toggleCart() {
-      const active = cartPanel.classList.toggle("active");
-      overlay.style.display = active ? "block" : "none";
-    }
-    // Закрытие по клику на фон
-    overlay.addEventListener("click", () => {
-      cartPanel.classList.remove("active");
-      overlay.style.display = "none";
-    });
+function addToCart(name, price) {
+  price = Number(price) || 0;
+  const item = cart.find(i => i.name === name);
+  if (item) {
+    item.qty++;
+  } else {
+    cart.push({ name, price, qty: 1 }); 
+  }
+  saveCart();
+  updateCartCount();
+}
 
-    function toggleSidebar() { sidebar.classList.toggle("active"); }
+// Обновляем количество в иконке корзины
+function updateCartCount() {
+  const cartCount = document.getElementById("cart-count");
+  if (cartCount) {
+    const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+    cartCount.textContent = totalQty;
+  }
+}
+
+// сразу при загрузке страницы
+updateCartCount();
 
     // 🔍 Поиск
     const searchInput = document.getElementById("search");
@@ -473,16 +427,14 @@
       });
     };
 
-    // Закрытие по ESC (удобство)
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        // закрыть модалки
-        document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
-        // закрыть корзину
-        cartPanel.classList.remove("active");
-        overlay.style.display = "none";
-      }
-    });
+    // Закрытие по ESC
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    // закрыть модалки
+    document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+  }
+});
   </script>
+   
 </body>
 </html>
