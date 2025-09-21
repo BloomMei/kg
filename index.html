@@ -3,62 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Магазин косметики</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Главная страница</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("fon.jpg") no-repeat center center/cover;
+      color: #333;
+    }
+    header {
+      background: rgba(255, 192, 203, 0.8); /* мягкий розово-персиковый */
       padding: 20px;
-      background: linear-gradient(135deg, #f9ecec 0%, #f6e1f9 100%);
-      color: #444;
+      text-align: center;
     }
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-bottom: 20px;
-      border: 3px solid #fff;
-      box-shadow: 0 0 15px rgba(214,51,108,0.4);
+    header h1 {
+      margin: 0;
     }
-    h1 { color: #d6336c; }
-    .link {
+    main {
+      padding: 20px;
+      background: rgba(255, 228, 225, 0.9); /* светлый розовый */
+      max-width: 800px;
+      margin: 40px auto;
+      border-radius: 12px;
+    }
+    a.btn {
       display: inline-block;
-      margin: 10px auto;
-      padding: 12px 20px;
-      border-radius: 30px;
-      background: #d6336c;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #ff99aa;
       color: white;
+      border-radius: 8px;
       text-decoration: none;
       font-weight: bold;
-      font-size: 16px;
-      transition: 0.3s;
     }
-    .link:hover { background: #a61e4d; }
-  </style>
+    a.btn:hover {
+      background: #ff778c;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 192, 203, 0.8);
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    .social-links a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .social-links {
+  text-align: center;
+  padding: 20px;
+  background: transparent;
+}
+
+.social-links a {
+  margin: 0 12px;
+  font-size: 34px;
+  color: #f8a5a5; /* нежно-розовый */
+  transition: 0.3s;
+}
+
+.social-links a:hover {
+  color: #ff6f91; /* более насыщенный розовый */
+}
+
+ </style>
 </head>
 <body>
-  <img src="https://via.placeholder.com/120" alt="Аватар" class="avatar">
-  <h1>Магазин косметики</h1>
-  <p>Лучшие средства для ухода за кожей и волосами ✨</p>
+  <header>
+    <h1>Магазин косметики</h1>
+  </header>
 
-  <a href="catalog.html" class="link">Перейти в каталог</a>
-  <br>
-  <a href="https://instagram.com/username" class="link" target="_blank">
-    <i class="fab fa-instagram"></i> Instagram
+  <main>
+    <h2>Добро пожаловать!</h2>
+    <p>Мы предлагаем натуральную и органическую косметику для ухода за лицом и телом.</p>
+    <p>Нежные формулы, проверенные ингредиенты и забота о вашей красоте каждый день 🌸</p>
+
+    <a href="catalog.html" class="btn">Перейти в каталог</a>
+
+     <section>
+    <h2>О нас</h2>
+    <p>Здесь будет информация о компании, миссии и преимуществах.</p>
+    <a href="https://wa.me/996500000000" class="btn">Связаться с нами</a>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <p>📍 Адрес: г. Бишкек, ул. Примерная 10</p>
+    <p>📞 Телефон: +996 500 000 000</p>
+    <p>✉️ Email: info@example.com</p>
+    <a href="https://wa.me/996500000000" class="btn" target="_blank">Написать в WhatsApp</a>
+  </section>
+  </main>
+
+  <footer>
+    <p>📞 Контакты: +996501168726</p>
+    <div class="social-links">
+      <a href="https://wa.me/996501168726" target="_blank">WhatsApp</a> |
+      <a href="https://t.me/yourtelegram" target="_blank">Telegram</a> |
+      <a href="https://instagram.com/yourinstagram" target="_blank">Instagram</a>
+    </div>
+  </footer>
+
+  <!-- Социальные ссылки -->
+<div class="social-links">
+  <a href="https://wa.me/996501168726" target="_blank" title="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
   </a>
-  <a href="https://wa.me/996501168726" class="link" target="_blank">
-    <i class="fab fa-whatsapp"></i> WhatsApp
+  <a href="https://t.me/yourtelegram" target="_blank" title="Telegram">
+    <i class="fab fa-telegram"></i>
   </a>
-  <a href="https://t.me/khai451" class="link" target="_blank">
-    <i class="fab fa-telegram"></i> Telegram
+  <a href="https://instagram.com/yourinstagram" target="_blank" title="Instagram">
+    <i class="fab fa-instagram"></i>
   </a>
+</div>
+
+<!-- Подключаем Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </body>
 </html>
-
-
-
-
-
-
