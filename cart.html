@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Моя корзина</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 20px;
+      background: #fafafa;
+      color: #333;
+    }
+    h1 { color: #d6336c; }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .cart-item button {
+      background: none;
+      border: none;
+      color: #d6336c;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .total {
+      margin-top: 20px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .btn-back {
+      background: #ccc;
+      color: #333;
+    }
+    .btn-back:hover {
+      background: #aaa;
+      color: #fff;
+    }
+
+    .btn-checkout {
+      background: #25D366;
+      color: #fff;
+    }
+    .btn-checkout:hover {
+      background: #1ebd5a;
+    }
+
+    .empty { 
+      color: #888; 
+      margin-top: 40px; 
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Моя корзина</h1>
+
+  <div id="cart-items"></div>
+  <p id="cart-total"></p>
+
+  <a href="catalog.html" class="btn btn-back">
+    <i class="fas fa-arrow-left"></i> Назад к каталогу
+  </a>
+  <a id="checkout" class="btn btn-checkout" style="display:none;" target="_blank">
+    <i class="fab fa-whatsapp"></i> Оформить заказ
+  </a>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItems = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    const checkout = document.getElementById("checkout");
+
+    function renderCart() {
+      let total = 0;
+      cartItems.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = "<p class='empty'>Корзина пуста</p>";
+        cartTotal.textContent = "";
+        checkout.style.display = "none";
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        const div = document.createElement("div");
+        div.classList.add("cart-item");
+        div.innerHTML = `
+          <div>
+            <b>${item.name}</b> × ${item.qty} — ${item.price * item.qty} ₽
+          </div>
+          <button onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+        `;
+        cartItems.appendChild(div);
+      });
+
+      cartTotal.textContent = "Итого: " + total + " ₽";
+      checkout.style.display = "inline-flex";
+      checkout.href = `https://wa.me/996501168726?text=${encodeURIComponent(
+        "Хочу заказать: " +
+        cart.map(i => `${i.name} ×${i.qty}`).join(", ") +
+        ". Сумма: " + total + "₽"
+      )}`;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>
