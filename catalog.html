@@ -1665,130 +1665,230 @@ function prevSlide(modalId){ showSlide(modalId, -1); }
 
 
   <script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+  // Кнопка "Вверх"
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+  window.addEventListener("scroll", () => {
+    scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+  });
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Корзина
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-function addToCart(name, price) {
-  price = Number(price) || 0;
-  const item = cart.find(i => i.name === name);
-  if (item) {
-    item.qty++;
-  } else {
-    cart.push({ name, price, qty: 1 }); 
+  function saveCart() { localStorage.setItem("cart", JSON.stringify(cart)); }
+  function updateCartCount() {
+    const total = cart.reduce((sum, i) => sum + i.qty, 0);
+    const countElems = [document.getElementById("cart-count"), document.getElementById("cart-count-fixed")];
+    countElems.forEach(el => { if(el) el.textContent = total; });
   }
-  saveCart();
+  function addToCart(name, price) {
+    price = Number(price) || 0;
+    const item = cart.find(i => i.name === name);
+    if(item) item.qty++; else cart.push({ name, price, qty: 1 });
+    saveCart(); updateCartCount();
+  }
   updateCartCount();
-}
 
-// Обновляем количество в иконке корзины
-function updateCartCount() {
-  let total = cart.reduce((sum, item) => sum + item.qty, 0);
-  document.getElementById("cart-count").textContent = total;
-  document.getElementById("cart-count-fixed").textContent = total;
-}
-
-// сразу при загрузке страницы
-updateCartCount();
-
-    // 🔍 Поиск
-    const searchInput = document.getElementById("search");
+  // Поиск
+  const searchInput = document.getElementById("search");
+  if(searchInput) {
     searchInput.addEventListener("input", () => {
       const value = searchInput.value.toLowerCase();
       document.querySelectorAll(".product").forEach(product => {
-        const text = product.innerText.toLowerCase();
-        product.style.display = text.includes(value) ? "flex" : "none";
+        product.style.display = product.innerText.toLowerCase().includes(value) ? "flex" : "none";
       });
     });
+  }
 
-    // ⬆⬇ Сортировка (исправлена — предыдущая версия была обрезана и вызывала синтаксическую ошибку)
-    const sortSelect = document.getElementById("sort");
+  // Сортировка
+  const sortSelect = document.getElementById("sort");
+  if(sortSelect) {
     sortSelect.addEventListener("change", () => {
       const value = sortSelect.value;
       document.querySelectorAll("section").forEach(section => {
         const products = Array.from(section.querySelectorAll(".product"));
         products.sort((a, b) => {
-          const pa = parseInt(a.querySelector(".price").dataset.price) || 0;
-          const pb = parseInt(b.querySelector(".price").dataset.price) || 0;
-          if (value === "asc") return pa - pb;
-          if (value === "desc") return pb - pa;
-          return 0;
+          const pa = parseInt(a.querySelector(".price")?.dataset.price) || 0;
+          const pb = parseInt(b.querySelector(".price")?.dataset.price) || 0;
+          return value === "asc" ? pa - pb : value === "desc" ? pb - pa : 0;
         });
         products.forEach(p => section.appendChild(p));
       });
     });
-
-    // Модальные окна
-    function openModal(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  el.style.display = "block";
-
-  // Если есть слайды — показать первый
-  const slides = el.querySelectorAll('.slide');
-  if (slides.length) {
-    slideIndex[id] = 0;
-    slides.forEach(s => s.style.display = 'none');
-    slides[0].style.display = 'block';
   }
-}
 
-function closeModal(id) {
-  const el = document.getElementById(id);
-  if (el) el.style.display = "none";
-}
-
-
-    // Закрытие по ESC
-window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    // закрыть модалки
-    document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+  // Модальные окна
+  let slideIndex = {};
+  function showSlide(modalId, n) {
+    const modal = document.getElementById(modalId);
+    if(!modal) return;
+    const slides = modal.querySelectorAll(".slide");
+    if(!slideIndex[modalId]) slideIndex[modalId] = 0;
+    slideIndex[modalId] += n;
+    if(slideIndex[modalId] >= slides.length) slideIndex[modalId] = 0;
+    if(slideIndex[modalId] < 0) slideIndex[modalId] = slides.length - 1;
+    slides.forEach(s => s.style.display = "none");
+    slides[slideIndex[modalId]].style.display = "block";
   }
-});
-
-// Открытие/закрытие бокового меню
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("active");
-}
-
-// Чтобы при клике на пункт меню оно закрывалось
-document.querySelectorAll(".sidebar a").forEach(link => {
-  link.addEventListener("click", () => {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.remove("active");
-  });
-});
-// Свайп для закрытия сайдбара (слева направо)
-let touchStartX = 0;
-
-document.addEventListener("touchstart", (e) => {
-  touchStartX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend", (e) => {
-  let touchEndX = e.changedTouches[0].clientX;
-  let diffX = touchEndX - touchStartX;
-
-  // если свайп вправо и длина жеста больше 70px
-  if (diffX > 70) {
-    const sidebar = document.getElementById("sidebar");
-    if (sidebar.classList.contains("active")) {
-      sidebar.classList.remove("active");
+  window.showSlide = showSlide; // чтобы доступно было из HTML
+  window.nextSlide = (id) => showSlide(id, 1);
+  window.prevSlide = (id) => showSlide(id, -1);
+  window.openModal = (id) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.style.display = "block";
+    const slides = el.querySelectorAll(".slide");
+    if(slides.length) {
+      slideIndex[id] = 0;
+      slides.forEach(s => s.style.display = "none");
+      slides[0].style.display = "block";
     }
   }
+  window.closeModal = (id) => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = "none";
+  }
+
+  // Закрытие модалок по ESC
+  window.addEventListener("keydown", (e) => {
+    if(e.key === "Escape") document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+  });
+
+  // Боковое меню
+  const sidebar = document.getElementById("sidebar");
+  window.toggleSidebar = () => sidebar?.classList.toggle("active");
+  document.querySelectorAll(".sidebar a").forEach(link => {
+    link.addEventListener("click", () => sidebar?.classList.remove("active"));
+  });
+
+  // Свайп для закрытия сайдбара
+  let touchStartX = 0;
+  document.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener("touchend", (e) => {
+    if(e.changedTouches[0].clientX - touchStartX > 70) sidebar?.classList.remove("active");
+  });
+
 });
   </script>
    
-   <!-- Закреплённая кнопка корзины для мобильных -->
+   <<!-- Закреплённая кнопка корзины для мобильных -->
 <div class="cart-fixed" onclick="window.location.href='cart.html'">
   🛒 Корзина <span id="cart-count-fixed">0</span>
 </div>
 <!-- Кнопка "Вверх" -->
 <button id="scrollTopBtn" class="scroll-top">⬆ Вверх</button>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Кнопка "Вверх"
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+  window.addEventListener("scroll", () => {
+    scrollTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+  });
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Корзина
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  function saveCart() { localStorage.setItem("cart", JSON.stringify(cart)); }
+  function updateCartCount() {
+    const total = cart.reduce((sum, i) => sum + i.qty, 0);
+    [document.getElementById("cart-count"), document.getElementById("cart-count-fixed")].forEach(el => { if(el) el.textContent = total; });
+  }
+  window.addToCart = (name, price) => {
+    price = Number(price) || 0;
+    const item = cart.find(i => i.name === name);
+    if(item) item.qty++; else cart.push({ name, price, qty: 1 });
+    saveCart(); updateCartCount();
+  }
+  updateCartCount();
+
+  // Поиск
+  const searchInput = document.getElementById("search");
+  if(searchInput) {
+    searchInput.addEventListener("input", () => {
+      const value = searchInput.value.toLowerCase();
+      document.querySelectorAll(".product").forEach(product => {
+        product.style.display = product.innerText.toLowerCase().includes(value) ? "flex" : "none";
+      });
+    });
+  }
+
+  // Сортировка
+  const sortSelect = document.getElementById("sort");
+  if(sortSelect) {
+    sortSelect.addEventListener("change", () => {
+      const value = sortSelect.value;
+      document.querySelectorAll("section").forEach(section => {
+        const products = Array.from(section.querySelectorAll(".product"));
+        products.sort((a, b) => {
+          const pa = parseInt(a.querySelector(".price")?.dataset.price) || 0;
+          const pb = parseInt(b.querySelector(".price")?.dataset.price) || 0;
+          return value === "asc" ? pa - pb : value === "desc" ? pb - pa : 0;
+        });
+        products.forEach(p => section.appendChild(p));
+      });
+    });
+  }
+
+  // Модалки и слайды
+  const slideIndex = {};
+  window.showSlide = (modalId, n) => {
+    const modal = document.getElementById(modalId);
+    if(!modal) return;
+    const slides = modal.querySelectorAll(".slide");
+    if(!slideIndex[modalId]) slideIndex[modalId] = 0;
+    slideIndex[modalId] += n;
+    if(slideIndex[modalId] >= slides.length) slideIndex[modalId] = 0;
+    if(slideIndex[modalId] < 0) slideIndex[modalId] = slides.length - 1;
+    slides.forEach(s => s.style.display = "none");
+    slides[slideIndex[modalId]].style.display = "block";
+  }
+  window.nextSlide = id => window.showSlide(id, 1);
+  window.prevSlide = id => window.showSlide(id, -1);
+
+  window.openModal = id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.style.display = "block";
+    const slides = el.querySelectorAll(".slide");
+    if(slides.length) {
+      slideIndex[id] = 0;
+      slides.forEach(s => s.style.display = "none");
+      slides[0].style.display = "block";
+    }
+  }
+  window.closeModal = id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = "none";
+  }
+
+  // Закрытие модалок по ESC
+  window.addEventListener("keydown", e => {
+    if(e.key === "Escape") document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+  });
+
+  // Сайдбар
+  const sidebar = document.getElementById("sidebar");
+  window.toggleSidebar = () => sidebar?.classList.toggle("active");
+  document.querySelectorAll(".sidebar a").forEach(link => {
+    link.addEventListener("click", () => sidebar?.classList.remove("active"));
+  });
+
+  // Свайп для закрытия сайдбара
+  let touchStartX = 0;
+  document.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener("touchend", e => {
+    if(e.changedTouches[0].clientX - touchStartX > 70) sidebar?.classList.remove("active");
+  });
+
+});
+</script>
+
 </body>
 </html>
