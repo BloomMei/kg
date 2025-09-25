@@ -6,6 +6,19 @@
   <title>Каталог</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    .back-btn {
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: 0.3s;
+}
+.back-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
     header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -265,7 +278,9 @@ header h1 {
  <header>
   <div class="menu-left">
     <span class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
-    <a href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
+   <a href="index.html" class="back-btn">
+  <i class="fas fa-arrow-left"></i>
+</a>
   </div>
   <h1>Каталог</h1>
 </header>
