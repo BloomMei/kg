@@ -1660,8 +1660,9 @@ function addToCart(name, price) {
 
 // Обновляем количество в иконке корзины
 function updateCartCount() {
-  document.getElementById("cart-count").textContent = cart.length;
-  document.getElementById("cart-count-fixed").textContent = cart.length;
+  let total = cart.reduce((sum, item) => sum + item.qty, 0);
+  document.getElementById("cart-count").textContent = total;
+  document.getElementById("cart-count-fixed").textContent = total;
 }
 
 // сразу при загрузке страницы
