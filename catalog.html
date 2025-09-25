@@ -6,7 +6,21 @@
   <title>Каталог</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      position: relative;
+    }
+
+    header h1 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      font-size: 20px;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -155,6 +169,8 @@
       font-weight: bold;
       transition: 0.3s;
       margin: 2px;
+      .add-btn {
+  touch-action: manipulation; /* отключает зум по двойному тапу */
     }
     .add-btn:hover { background: #a61e4d; }
 
