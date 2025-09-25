@@ -23,10 +23,10 @@
   position: fixed;
   top: 0; left: 0; right: 0;
   background: #d6336c;
-  padding: 15px;
+  padding: 12px 15px;
   color: white;
   display: flex;
-  align-items: center;
+  align-items: center;   /* все элементы строго по центру */
   justify-content: space-between;
   z-index: 1000;
 }
@@ -38,6 +38,26 @@ header h1 {
   margin: 0;
   font-size: 20px;
 }
+
+.header-left {
+  display: flex;
+  align-items: center;   /* бургер и стрелка на одной линии */
+  gap: 10px;
+}
+
+.back-btn {
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: 0.3s;
+}
+.back-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
     .cart-icon {
       position: relative;
       font-size: 22px;
@@ -276,13 +296,19 @@ header h1 {
 </head>
 <body>
  <header>
-  <div class="menu-left">
-    <span class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
-   <a href="index.html" class="back-btn">
-  <i class="fas fa-arrow-left"></i>
-</a>
+  <div class="header-left">
+    <span class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </span>
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+    </a>
   </div>
   <h1>Каталог</h1>
+  <div class="cart-icon" onclick="window.location.href='cart.html'">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cart-count" class="cart-count">0</span>
+  </div>
 </header>
 
   <!-- Левое меню -->
