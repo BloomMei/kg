@@ -1637,12 +1637,6 @@ function prevSlide(modalId){ showSlide(modalId, -1); }
 </script>
 
 
- <!-- Кнопка корзины (внизу или в хедере) -->
-<div class="cart-icon" onclick="window.location.href='cart.html'">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="cart-count" class="cart-count">0</span>
-</div>
-
 
   <script>
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
