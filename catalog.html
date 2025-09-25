@@ -138,21 +138,21 @@ header h1 {
       margin-bottom: 8px;
       display: block;
     }
-    .add-btn {
-      padding: 6px 12px;
-      border: none;
-      background: #d6336c;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
-      margin: 2px;
-      .add-btn {
-  touch-action: manipulation; /* отключает зум по двойному тапу */
-    }
-    .add-btn:hover { background: #a61e4d; }
-
+   .add-btn {
+  padding: 6px 12px;
+  border: none;
+  background: #d6336c;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  margin: 2px;
+  touch-action: manipulation; /* ✅ правильное место */
+}
+.add-btn:hover {
+  background: #a61e4d;
+}
     /* Корзина */
     
     .checkout-btn:hover { background: #1ebd5a; }
@@ -268,11 +268,6 @@ header h1 {
     <a href="index.html"><i class="fas fa-arrow-left"></i> На главную</a>
   </div>
   <h1>Каталог</h1>
-  <!-- Корзина -->
-  <div class="cart-icon" onclick="window.location.href='cart.html'">
-    <i class="fas fa-shopping-cart"></i>
-    <span id="cart-count" class="cart-count">0</span>
-  </div>
 </header>
 
   <!-- Левое меню -->
